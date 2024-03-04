@@ -1,5 +1,5 @@
 """This module contains the pre data that is needed to
-encode and decode an affine crypto
+encode and decode an affine cipher
 """
 
 from collections import namedtuple
@@ -11,8 +11,8 @@ __all__ = [
     'persian_dtable',
     'Key',
     'keys',
-    'MOD',
-    'PHI',
+    'MOD32',
+    'PHI32',
     'mul_reverses'
 ]
 
@@ -30,23 +30,21 @@ as_ = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31]
 assert len(as_) == 2**5 - 2**4
 assert all(gcd(i, 32) == 1 for i in as_)
 
-bs = list(range(32))
+bs = range(32)
 keys = [Key(_a, _b) for _a in as_ for _b in bs]
 
 assert len(keys) == len(as_) * 32
 
 # CONSTANTS
-MOD = 32
-PHI = len(as_)
+MOD32 = 32
+PHI32 = len(as_)
 
 
 # the reverses of as
-def compute_ar(a, phi=PHI):
-    return (a ** (phi - 1)) % MOD
+def compute_ar(a, phi=PHI32):
+    """a_reverse = a^(PHI32-1) % MOD32"""
+    return (a ** (phi - 1)) % MOD32
 
 
-mul_reverses = {
-    a: compute_ar(a) for a in as_
-}
-
-assert all([(a * ar % MOD == 1) for a, ar in mul_reverses.items()])
+mul_reverses = {a: compute_ar(a) for a in as_}
+assert all([(a * ar % MOD32 == 1) for a, ar in mul_reverses.items()])
