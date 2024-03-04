@@ -14,4 +14,5 @@ def find_key():
 
 
 key = find_key()
+print(key)
 assert ''.join(encode(pt, key) for pt in plain_text) == cipher_text
