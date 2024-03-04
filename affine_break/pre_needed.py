@@ -27,10 +27,13 @@ persian_dtable = dict(zip(range(32), persian_letters))
 Key = namedtuple('Key', 'a b')
 
 as_ = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31]
+assert len(as_) == 2**5 - 2**4
 assert all(gcd(i, 32) == 1 for i in as_)
 
 bs = list(range(32))
 keys = [Key(_a, _b) for _a in as_ for _b in bs]
+
+assert len(keys) == len(as_) * 32
 
 # CONSTANTS
 MOD = 32
