@@ -39,7 +39,7 @@
 وجود دارد را با تمامی کلید‌‌های ممکن امتحان کردم و هر کدام از خروجی‌ها را بررسی کردم که به این رسیدم:
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=0.6\textwidth, height=0.4\textheight]{images/found}
+\includegraphics[width=0.63\textwidth, height=0.4\textheight]{images/found}
 \end{center}
 \end{figure}
 
@@ -53,7 +53,7 @@
 
 \item \lr{\texttt{functions.py}}
 
-توابعی که در این ماژول هستند دو تابع 
+توابعی که در این ماژول نوشته شده‌اند دو تابع 
 \lr{\texttt{encode}}
 و
 \lr{\texttt{decode}}
@@ -101,7 +101,7 @@ p_i, p_{i + k}, p_{i + 2k}, p_{i + 3k},\dots
 \end{equation}
 انجام دهیم و متونی را از 
 \lr{cipher text}
-استخراج کنیم.
+استخراج کنیم، سپس برای هر $i$ روی حروفی که این $i$ شامل می‌شود، آنالیز آماری انجام دهیم و حروفی که *ممکن* است برای کلید استفاده شده باشند را شناسایی کنیم و سپس با استفاده از تمامی جایگشت‌هایی که از حروف پیدا شده بدست می‌آیند، کلید‌ها را تک تک امتحان کنیم.
 
 برای مثال چنین متن رمز شده‌ای داریم:
 
@@ -126,21 +126,25 @@ p_i, p_{i + k}, p_{i + 2k}, p_{i + 3k},\dots
 \end{tabular}
 \end{adjustbox}
 \end{table}
-\end{itemize}
+
+که می‌شود:
+\lr{\texttt{PAEBABANZIAHAKDXAAAKIU}}
 
 و به همین ترتیب برای 
-$i = 1$،
-$i = 2$ و
-$i = 3$.
-
+\item $i = 1$: \lr{\texttt{PXKNZNLIMMGTUSWIZVZBW}}
+\item $i = 2$: \lr{\texttt{QQGKUGJTJVVVCGUTUVCQP}}
+\item $i = 3$: \lr{\texttt{CVYMYBOSYRORTDOLVRVPO}} 
+\end{itemize}
 حالا برای هر یک از متون بدست آمده یک تحلیل آنالیزی انجام می‌دهیم و حروفی که \textbf{ممکن} است بجای آن حرف باشند را پیدا میکنیم.
 برای مثال در مورد بالا چنین حروفی پیدا می‌شوند:
+\begin{latin}
 \begin{itemize}
 \item $i = 0$ : \lr{A, I, N, W, and X} 
 \item $i = 1$ : \lr{I and Z}
 \item $i = 2$ : \lr{C}
 \item $i = 3$ : \lr{K, N, R, V, and Y}
 \end{itemize}
+\end{latin}
 
 که حالا فضای کلید‌های ما می‌شود:
 $5 \times 2 \times 1 \times 5 = 50$
@@ -158,8 +162,8 @@ $26^4$
 مقدار \lr{\texttt{a}} در کلید رمز مستوی باید معکوس ضربی داشته باشد، که هم در فارسی و هم در انگلیسی عدد ۲ معکوس ضربی ندارد (چون زوج است و نسبت به ۲۶ و یا ۳۲ اول نیست.) پس دو رقم آخر شماره دانشجویی من نمی‌توانند یک کلید برای رمز مستوی باشند.
 
 \subsection{رمزگشایی یک متن رمز شده با دو حرف آشکار}
-طبق صورت سوال: $P \rightarrow M$ و 
-$J \rightarrow A$
+طبق صورت سوال: $M \rightarrow P$ و 
+$A \rightarrow J$
 و
 \begin{equation}
 C_i = E_k(P_i) = aP_i + b \bmod{26}
@@ -174,7 +178,7 @@ b & \modts 9 \Rightarrow b = 9, a = 7
 
 برای محاسبه‌‌ی معکوس ضربی عدد ۷ چنین می‌کنیم:
 \begin{equation*}
-a^{\Phi(26) - 1} \mod 26 \Rightarrow 7^{11} \modts 15
+a^{\Phi(26) - 1} \bmod{26} \Rightarrow 7^{11} \modts 15
 \end{equation*}
 
 و حالا طبق فرمول
@@ -303,13 +307,13 @@ C =
 & \Rightarrow C = 
 \begin{pmatrix}
 21 & 24 & 7 \\
-3 & 3 & 16 \\
+3 & 13 & 16 \\
 6 & 20 & 5 \\
 \end{pmatrix} \\
 & \Rightarrow \mathrm{adj}(A) = 
 \begin{pmatrix}
 21 & 3 & 6 \\
-24 & 3 & 20 \\
+24 & 13 & 20 \\
 7 & 16 & 5 \\
 \end{pmatrix} \\
 \end{split}
@@ -344,14 +348,14 @@ C =
 \mathrm{det}(A)^{-1} \cdot \mathrm{adj}(A) =
 \begin{pmatrix}
 21\times21 & 21\times3 & 21\times6 \\
-21\times24 & 21\times3 & 21\times20 \\
+21\times24 & 21\times13 & 21\times20 \\
 21\times7 & 21\times16 & 21\times5 \\
 \end{pmatrix} \Rightarrow 
 A^{-1} = 
 \begin{pmatrix}
-25 & 11 & 22 \\
-10 & 11 & 4 \\
-17 & 24 & 1 \\
+25&11&22\\
+10&13&4\\
+17&24&1\\
 \end{pmatrix}
 \end{equation*}
 
