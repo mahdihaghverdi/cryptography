@@ -26,9 +26,8 @@ persian_dtable = dict(zip(range(32), persian_letters))
 # (a, b) keys
 Key = namedtuple('Key', 'a b')
 
-as_ = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31]
+as_ = [num for num in range(1, 32) if gcd(num, 32) == 1]
 assert len(as_) == 2**5 - 2**4
-assert all(gcd(i, 32) == 1 for i in as_)
 
 bs = range(32)
 keys = [Key(_a, _b) for _a in as_ for _b in bs]
