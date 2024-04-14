@@ -1,0 +1,96 @@
+\documentclass{article}
+
+% URLs and hyperlinks ---------------------------------------
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+\usepackage{xurl}
+%----------------------------------------------------
+
+\usepackage{amsmath, amssymb, empheq}
+\usepackage{enumitem}
+\usepackage{adjustbox}
+\usepackage{euler}
+\usepackage{graphicx}
+\usepackage{float}
+
+\usepackage{xepersian}
+\settextfont{Yas}
+\newcommand{\modts}{\overset{26}{\equiv}}
+
+\title{تکلیف دوم}
+\author{مهدی حق‌وردی}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{}
+\textbf{{\large با توجه به سیستم رمزنگاری \lr{DES} به سوالات زیر پاسخ دهید.}}
+
+\begin{enumerate}[label=\alph*)]
+\item 
+تعداد کل عملیات‌های 
+\lr{\texttt{xor}}
+را بدست آورید.
+
+\item 
+هدف از 
+\lr{s-box}ها
+را بنویسید.
+
+\item 
+پیچیدگی حمله‌ی جست‌وجوی جامع به این سیستم از چه مرتبه‌ای می‌باشد؟
+
+\item 
+ در چه حمله‌ای به این سیستم پیچیدگی زمانی از مرتبه‌ی
+$2^{56}$
+خواهد شد؟
+
+\item 
+اگر خروجی سیستم رمزنگاری به یک سیستم رمزنگاری دیگر داده شود، چه تغییری در
+امنیت آن حاصل می‌شود؟ \lr{(double des)} اگر این کار سه بار تکرار شود
+چطور؟ 
+\lr{(triple des)}
+
+\item 
+ویژگی مکمل بودن این سیستم را ثابت کنید و توضیح دهید در آن صورت حمله به
+این سیستم از چه مرتبه‌ایست و چرا؟
+
+خاصیت مکمل بودن 
+\lr{DES}:
+\begin{latin}
+\begin{equation}
+\text{DES}_\text{K}(\text{M}) = \text{C}
+\Rightarrow
+\text{DES}_{\overline{\text{K}}}(\overline{\text{M}}) = \overline{\text{C}}
+\end{equation}
+\end{latin}
+\end{enumerate}
+
+\section{}
+{\large \textbf{با استفاده از یک کلید رمز واحد، هر یک ازتبدیالت زیر را بر متن آشکار که تنها در بیت اول با هم تفاوت دارند، اعمال کنید. تعداد بیت‌های تغییر یافته پس از هرتبدیل را پیدا کنید. هرتبدیل را بطور مستقل اعمال کنید. در مورد اثر بهمنی پس از هرتبدیل بطور مستقل و سپس اثر بهمنی پس از اعمال یک راند توضیح دهید.}}
+
+\begin{enumerate}[label=\alph*)]
+\item \lr{subBytes}
+\item \lr{shiftRows}
+\item \lr{mixColumns}
+\item \lr{addRoundKey}
+\end{enumerate}
+
+\section{}
+{\large \textbf{از بین مدهای عملیاتی
+\lr{ECB},
+\lr{CBC},
+\lr{OFB},
+\lr{CFB}
+و
+\lr{CTR}
+در کدام یک امکان افزایش سرعت در عمل رمزگذاری با استفاده از
+\lr{parallel processing}
+یا پردازش موازی وجود دارد؟}}
+\end{document}
