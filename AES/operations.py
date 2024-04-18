@@ -13,6 +13,13 @@ BitMat: TypeAlias = list[list[int]]
 
 GF128 = galois.GF(2, 8, irreducible_poly='x^8 + x^4 + x^3 + x + 1')
 
+result = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0]
+]
+
 
 def batched(iterable, n):
     # batched('ABCDEFG', 3) -> ABC DEF G
@@ -124,33 +131,23 @@ def _isub_byte(byte: int) -> int:
 
 
 def _sub_bytes(input_stream: BitMat) -> BitMat:
-    result = [
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0]
-    ]
+    _r = result.copy()
 
     for col in range(4):
         for row in range(4):
             sb = _sub_byte(input_stream[row][col])
-            result[row][col] = sb
-    return result
+            _r[row][col] = sb
+    return _r
 
 
 def _isub_bytes(input_stream: BitMat) -> BitMat:
-    result = [
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0]
-    ]
+    _r = result.copy()
 
     for col in range(4):
         for row in range(4):
             sb = _isub_byte(input_stream[row][col])
-            result[row][col] = sb
-    return result
+            _r[row][col] = sb
+    return _r
 
 
 def sub_bytes(stream: str) -> str:
@@ -207,3 +204,38 @@ def shift_row(stream: str) -> str:
     """
     strm = _stream_to_matrix(stream)
     return _matrix_to_stream(_shift_rows(strm))
+
+
+############ MC: Mix Columns ############  # noqa: E266
+mc_mat = GF128(
+    [[0x02, 0x03, 0x01, 0x01],
+     [0x01, 0x02, 0x03, 0x01],
+     [0x01, 0x01, 0x02, 0x03],
+     [0x03, 0x01, 0x01, 0x02]]
+)
+
+
+def _mix_columns(input_stream: BitMat) -> BitMat:
+    _r = []
+    got = GF128(input_stream)
+    _result = got @ mc_mat
+    for row in _result:
+        _r.append([num for num in row])
+    return _r
+
+
+def mix_columns(stream: str) -> str:
+    """MixColumn the stream
+
+    Arguments:
+        stream: b1b2b3...b4
+
+    Return:
+        apply a matrix multiplication and return the stream
+        c1c2c3...c15
+    """
+    _is = _stream_to_matrix(stream)
+    return _matrix_to_stream(_mix_columns(_is))
+
+
+print(GF128(0x01) * GF128(0x02))

@@ -1,4 +1,9 @@
-from AES.operations import _stream_to_matrix, _matrix_to_stream, sub_bytes, isub_bytes, shift_row
+import numpy
+
+from AES.operations import (
+    _stream_to_matrix, _matrix_to_stream, sub_bytes, isub_bytes, shift_row, mix_columns,
+    _mix_columns,
+)
 
 strm = ''
 for num in range(16):
@@ -53,3 +58,22 @@ shifted = [
 
 def test_shift_rows():
     assert shift_row(_matrix_to_stream(mat)) == _matrix_to_stream(shifted)
+
+
+to_mix = [
+    [1] + [0] * 3,
+    [0] * 4,
+    [0] * 4,
+    [0] * 4
+]
+
+got_from_mix = [
+    [2, 3, 1, 1],
+    [0] * 4,
+    [0] * 4,
+    [0] * 4
+]
+
+
+def test_mix_columns():
+    assert mix_columns(_matrix_to_stream(to_mix)) == _matrix_to_stream(got_from_mix)
