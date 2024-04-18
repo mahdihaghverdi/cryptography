@@ -1,5 +1,5 @@
 """This module contains the encode and decode functions of affine cipher"""
-from affine_break import Key, persian_ctable, MOD32, mul_reverses, persian_dtable, keys, persian_letters
+from Affine import Key, persian_ctable, MOD32, mul_reverses, persian_dtable, keys, persian_letters
 
 
 def _encode(pt: str, key: Key) -> str:

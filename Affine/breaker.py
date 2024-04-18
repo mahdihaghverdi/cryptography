@@ -1,4 +1,4 @@
-from affine_break import keys, decrypt, encrypt
+from Affine import keys, decrypt, encrypt
 
 cipher_text = 'طخلهمذهاعهذسذتذعضفخگسمدطشلذیذدطعهسصهص'
 for key in keys:
