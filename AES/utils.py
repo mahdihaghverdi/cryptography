@@ -132,12 +132,3 @@ def print_pt_ct_diff(pt, ct, num):
     _, __, diff = get_change_ratio(pt, ct)
     rich.print(f'[bold red]   [underline]{diff}[/red bold][/underline]')
     print()
-
-
-def print_pt_ct(pt1, pt2, ct1, ct2, diff):
-    rich.print(f'[white]P1[/white]:[bold blue]{pt1}[/blue bold]')
-    rich.print(f'[white]P2[/white]:[bold blue]{pt2}[/blue bold]')
-    print()
-    rich.print(f'[white]C1[/white]:[bold magenta]{ct1}[/magenta bold]')
-    rich.print(f'[white]C2[/white]:[bold magenta]{ct2}[/magenta bold]')
-    rich.print(f'[bold red]   [underline]{diff}[/red bold][/underline]')
