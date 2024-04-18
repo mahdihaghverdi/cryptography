@@ -7,7 +7,7 @@
 
 import galois
 
-from AES.utils import BitMat, result, type_and_len_check, stream_to_matrix, matrix_to_stream
+from AES.utils import BitMat, type_and_len_check, stream_to_matrix, matrix_to_stream
 
 GF128 = galois.GF(2, 8, irreducible_poly='x^8 + x^4 + x^3 + x + 1')
 
@@ -63,7 +63,12 @@ def _isub_byte(byte: int) -> int:
 
 
 def _sub_bytes(input_stream: BitMat) -> BitMat:
-    _r = result.copy()
+    _r = [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+    ]
 
     for col in range(4):
         for row in range(4):
@@ -73,7 +78,12 @@ def _sub_bytes(input_stream: BitMat) -> BitMat:
 
 
 def _isub_bytes(input_stream: BitMat) -> BitMat:
-    _r = result.copy()
+    _r = [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+    ]
 
     for col in range(4):
         for row in range(4):
@@ -150,7 +160,7 @@ mc_mat = GF128(
 )
 
 
-def _mix_columns(input_stream: BitMat) -> BitMat:
+def _mix_column(input_stream: BitMat) -> BitMat:
     _r = []
     got = GF128(input_stream)
     _result = got @ mc_mat
@@ -160,7 +170,7 @@ def _mix_columns(input_stream: BitMat) -> BitMat:
 
 
 @type_and_len_check
-def mix_columns(stream: str) -> str:
+def mix_column(stream: str) -> str:
     """MixColumn the stream
 
     Arguments:
@@ -171,10 +181,24 @@ def mix_columns(stream: str) -> str:
         c1c2c3...c15
     """
     _is = stream_to_matrix(stream)
-    return matrix_to_stream(_mix_columns(_is))
+    return matrix_to_stream(_mix_column(_is))
 
 
 ############ ARK: Add Round Key ############  # noqa: E266
 @type_and_len_check
 def add_round_key(stream: str, key: str) -> str:
     return f'{bin(int(key, 2) ^ int(stream, 2))[2:]:0>128}'
+
+
+############ FR: Full Round ############  # noqa: E266
+def _full_round(input_stream: BitMat, key: str) -> str:
+    _sb = _sub_bytes(input_stream)
+    _sr = _shift_rows(_sb)
+    _mc = _mix_column(_sr)
+    _ark = add_round_key(matrix_to_stream(_mc), key)
+    return _ark
+
+
+@type_and_len_check
+def full_round(stream: str, key: str) -> str:
+    return _full_round(stream_to_matrix(stream), key)

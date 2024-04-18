@@ -1,15 +1,12 @@
 from functools import wraps
 from inspect import getfullargspec
 from itertools import islice
-from typing import TypeAlias
+from typing import TypeAlias, Literal
+
+import rich
+from rich.table import Table
 
 BitMat: TypeAlias = list[list[int]]
-result = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0]
-]
 
 
 def batched(iterable, n):
@@ -86,8 +83,61 @@ def type_and_len_check(func):
 
 
 @type_and_len_check
-def get_change_ratio(before, after) -> float:
+def get_change_ratio(before, after) -> tuple[int, float, str]:
+    """Return number of changed bits and ratio of the change"""
     ratio = 0
+    difference = ''
     for b, a in zip(before, after):
-        ratio += int(b) ^ int(a)
-    return ratio / 128 * 100
+        is_not = int(b) ^ int(a)
+        ratio += is_not
+        if is_not:
+            difference += '^'
+        else:
+            difference += ' '
+    return ratio, ratio / 128 * 100, difference
+
+
+def print_operation_table(operation: Literal['sb', 'sr', 'mc', 'ark', 'fr'], count, ratio):
+    match operation:
+        case 'sb':
+            title = 'SB: Sub Bytes'
+        case 'sr':
+            title = 'SR: Shift Row'
+        case 'mc':
+            title = 'MC: Mix Column'
+        case 'ark':
+            title = 'ARK: Add Round Key'
+        case 'fr':
+            title = 'FR: Full Round'
+        case _:
+            raise ValueError("Operation must be one of 'sb', 'sr', 'mc' or 'ark'.")
+
+    table = Table("Changed bit No.", 'Bit change ratio', title=title, show_lines=True)
+    table.add_row('Cnt', f'[green]{count}[/green]')
+    table.add_row('ratio', f'[bold yellow]{ratio}%[/yellow bold]')
+    rich.print(table)
+
+
+def print_ct_ct_diff(ct1, ct2):
+    rich.print(f'[white]C1[/white]:[bold blue]{ct1}[/blue bold]')
+    rich.print(f'[white]C2[/white]:[bold magenta]{ct2}[/magenta bold]')
+    _, __, diff = get_change_ratio(ct1, ct2)
+    rich.print(f'[bold red]   [underline]{diff}[/red bold][/underline]')
+    print()
+
+
+def print_pt_ct_diff(pt, ct, num):
+    rich.print(f'[white]P{num}[/white]:[bold blue]{pt}[/blue bold]')
+    rich.print(f'[white]C{num}[/white]:[bold magenta]{ct}[/magenta bold]')
+    _, __, diff = get_change_ratio(pt, ct)
+    rich.print(f'[bold red]   [underline]{diff}[/red bold][/underline]')
+    print()
+
+
+def print_pt_ct(pt1, pt2, ct1, ct2, diff):
+    rich.print(f'[white]P1[/white]:[bold blue]{pt1}[/blue bold]')
+    rich.print(f'[white]P2[/white]:[bold blue]{pt2}[/blue bold]')
+    print()
+    rich.print(f'[white]C1[/white]:[bold magenta]{ct1}[/magenta bold]')
+    rich.print(f'[white]C2[/white]:[bold magenta]{ct2}[/magenta bold]')
+    rich.print(f'[bold red]   [underline]{diff}[/red bold][/underline]')
