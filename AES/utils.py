@@ -83,3 +83,11 @@ def type_and_len_check(func):
         return func(*args)
 
     return wrapper
+
+
+@type_and_len_check
+def get_change_ratio(before, after) -> float:
+    ratio = 0
+    for b, a in zip(before, after):
+        ratio += int(b) ^ int(a)
+    return ratio / 128 * 100
