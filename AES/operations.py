@@ -25,8 +25,6 @@ result = [
 
 def batched(iterable, n):
     # batched('ABCDEFG', 3) -> ABC DEF G
-    if n < 1:
-        raise ValueError('n must be at least one')
     it = iter(iterable)
     while batch := tuple(islice(it, n)):
         yield batch
@@ -91,7 +89,7 @@ def type_and_len_check(func):
 
         for arg, name in zip(args, argnames):
             if not len(arg) == 128:
-                raise TypeError(f'{name!r} should 128 bits')
+                raise ValueError(f'{name!r} should 128 bits')
 
         return func(*args)
     return wrapper

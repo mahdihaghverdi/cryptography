@@ -1,9 +1,23 @@
-import numpy
+import pathlib
+import sys
 
+import pytest
+
+sys.path.append(str(pathlib.Path(__file__).parent.parent.parent))
 from AES.operations import (
-    _stream_to_matrix, _matrix_to_stream, sub_bytes, isub_bytes, shift_row, mix_columns,
-    _mix_columns, add_round_key,
+    _stream_to_matrix, _matrix_to_stream, sub_bytes,
+    isub_bytes, shift_row, mix_columns, add_round_key, type_and_len_check,
 )
+
+
+def test_type_len_decorator():
+    f = type_and_len_check(lambda x: x)
+    with pytest.raises(TypeError):
+        f(2)
+
+    with pytest.raises(ValueError):
+        f('2')
+
 
 strm = ''
 for num in range(16):
@@ -60,19 +74,8 @@ def test_shift_rows():
     assert shift_row(_matrix_to_stream(mat)) == _matrix_to_stream(shifted)
 
 
-to_mix = [
-    [1] + [0] * 3,
-    [0] * 4,
-    [0] * 4,
-    [0] * 4
-]
-
-got_from_mix = [
-    [2, 3, 1, 1],
-    [0] * 4,
-    [0] * 4,
-    [0] * 4
-]
+to_mix = [[1] + [0] * 3, [0] * 4, [0] * 4, [0] * 4]
+got_from_mix = [[2, 3, 1, 1], [0] * 4, [0] * 4, [0] * 4]
 
 
 def test_mix_columns():
