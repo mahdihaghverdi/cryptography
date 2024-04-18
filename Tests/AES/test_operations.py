@@ -6,7 +6,7 @@ import pytest
 sys.path.append(str(pathlib.Path(__file__).parent.parent.parent))
 from AES import (
     stream_to_matrix, matrix_to_stream, sub_bytes,
-    isub_bytes, shift_row, mix_columns, add_round_key, type_and_len_check,
+    isub_bytes, shift_row, mix_column, add_round_key, type_and_len_check,
 )
 
 
@@ -79,7 +79,7 @@ got_from_mix = [[2, 3, 1, 1], [0] * 4, [0] * 4, [0] * 4]
 
 
 def test_mix_columns():
-    assert mix_columns(matrix_to_stream(to_mix)) == matrix_to_stream(got_from_mix)
+    assert mix_column(matrix_to_stream(to_mix)) == matrix_to_stream(got_from_mix)
 
 
 def test_add_round_key():

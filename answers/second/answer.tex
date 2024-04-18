@@ -11,6 +11,8 @@
 \usepackage{xurl}
 %----------------------------------------------------
 
+\usepackage{multicol}
+\usepackage{subfigure}
 \usepackage{paralist}
 \usepackage{amsmath, amssymb, empheq}
 \usepackage{enumitem}
@@ -183,12 +185,92 @@ E_k(P) = C \iff E_{\overline{k}}(\overline{P}) = \overline{C}
 \section{}
 {\large \textbf{با استفاده از یک کلید رمز واحد، هر یک ازتبدیلات زیر را بر متن آشکار که تنها در بیت اول با هم تفاوت دارند، اعمال کنید. تعداد بیت‌های تغییر یافته پس از هرتبدیل را پیدا کنید. هرتبدیل را بطور مستقل اعمال کنید. در مورد اثر بهمنی پس از هرتبدیل بطور مستقل و سپس اثر بهمنی پس از اعمال یک راند توضیح دهید.}}
 
+برای نوشتن این سوال هر عملیات 
+\lr{AES}
+را در پایتون پیاده سازی کردم که 
+\lr{source code}
+آن در پوشه‌ی 
+\lr{\texttt{AES}}
+همراه تکلیف ارسال شده است.
+
+پاسخ هر بخش در تصویری که جلویش نوشته شده‌ است نوشته شده است.
+
+\subsection{توضیح تصاویر}
+\begin{multicols}{2}
+اول از همه نام عملیات در بالای تصویر نوشته شده است،
+
+سپس متن آشکار و متن تغییر یافته و کاراکتر‌هایی که تغییر یافته‌اند نشان داده شده‌اند،
+
+دوباره همین کار روی متن آشکاری که بیت اول آن فرق کرده است تکرار شده است،
+
+سپس تفاوت‌های بین دو متن تغییر یافته نوشته شده،
+
+و در آخر در جدولی تعداد بیت‌های تغییر یافته و درصد تغییر یافتن متن رمز شده‌ی دوم نوشته شده است.
+
+\includegraphics[width=0.45\textwidth, height=0.35\textheight]{exam}
+\end{multicols}
+
+\subsection{پاسخ‌ها}
 \begin{enumerate}[label=\alph*)]
-\item \lr{subBytes}
-\item \lr{shiftRows}
-\item \lr{mixColumns}
-\item \lr{addRoundKey}
+\item \lr{SB: Sub Byte}
+تصویر
+\ref{fig:sb}
+
+\item \lr{SR: Shift Row}
+تصویر
+\ref{fig:sr}
+
+\item \lr{MC: Mix Columns}
+تصویر
+\ref{fig:mc}
+
+\item \lr{ARK: Add Round Key}
+تصویر
+\ref{fig:ark}
+
+\item \lr{FR: Full Round}
+تصویر
+\ref{fig:fr}
 \end{enumerate}
+
+همانطور که مشاهده شد، اثر بهمنی در عملیات‌های مختلف درصد کمی داشته و در یک دور (آن هم در این مورد خاص که اولین بیت تغییر کرده است) به 18\% رسید.
+
+اگر ما با کلیدی ۱۲۸ بیتی و عملیات کامل رمزنگار
+\lr{AES}
+که شامل ۱۶ دور است، (طبق مستندات) اثر بهمنی به نزدیک حداکثر آن، یعنی 50\% می‌رسد.
+
+
+\begin{figure}[b]
+\begin{center}
+\subfigure
+[\lr{SB: Sub Byte}]
+{\label{fig:sb}\includegraphics[width=0.8\textheight, height=0.49\textwidth, angle=90]{sb}
+}
+\subfigure
+[\lr{SR: Shift Row}]
+{\label{fig:sr}\includegraphics[width=0.8\textheight, height=0.49\textwidth, angle=90]{sr}}
+\end{center}
+\end{figure}
+
+\begin{figure}[b]
+\begin{center}
+\subfigure
+[\lr{MC: Mix Column}]
+{\label{fig:mc}\includegraphics[width=0.8\textheight, height=0.49\textwidth, angle=90]{mc}}
+\subfigure
+[\lr{ARK: Add Round Key}]
+{\label{fig:ark}\includegraphics[width=0.8\textheight, height=0.49\textwidth, angle=90]{ark}}
+\end{center}
+\end{figure}
+
+\begin{figure}[b]
+\begin{center}
+\subfigure
+[\lr{FR: Full Round}]
+{\label{fig:fr}\includegraphics[width=0.8\textheight, height=0.49\textwidth, angle=90]{fr}}
+\end{center}
+\caption{جزئیات یک دور از \lr{AES}}
+\end{figure}
 
 \section{}
 {\large \textbf{از بین مدهای عملیاتی
@@ -201,4 +283,10 @@ E_k(P) = C \iff E_{\overline{k}}(\overline{P}) = \overline{C}
 در کدام یک امکان افزایش سرعت در عمل رمزگذاری با استفاده از
 \lr{parallel processing}
 یا پردازش موازی وجود دارد؟}}
+
+مدهای:
+\begin{inparaitem}
+\item \lr{ECB}
+\item \lr{CTR}
+\end{inparaitem}
 \end{document}
