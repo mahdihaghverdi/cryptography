@@ -4,6 +4,8 @@
 - MC: Mix Columns
 - ARK: Add Round Key
 """
+from functools import wraps
+from inspect import getfullargspec
 from itertools import islice
 from typing import TypeAlias
 
@@ -79,6 +81,21 @@ def _matrix_to_stream(matrix: BitMat) -> str:
     return stream
 
 
+def type_and_len_check(func):
+    @wraps(func)
+    def wrapper(*args):
+        argnames = getfullargspec(func).args
+        for arg, name in zip(args, argnames):
+            if not isinstance(arg, str):
+                raise TypeError(f'{name!r} should be `str`')
+
+        for arg, name in zip(args, argnames):
+            if not len(arg) == 128:
+                raise TypeError(f'{name!r} should 128 bits')
+
+    return wrapper
+
+
 ############ SB: Sub Bytes ############  # noqa: E266
 sb_mat = GF128(
     [[1, 0, 0, 0, 1, 1, 1, 1],
@@ -150,6 +167,7 @@ def _isub_bytes(input_stream: BitMat) -> BitMat:
     return _r
 
 
+@type_and_len_check
 def sub_bytes(stream: str) -> str:
     """Sub byte the stream
 
@@ -162,6 +180,7 @@ def sub_bytes(stream: str) -> str:
     return _matrix_to_stream(_sub_bytes(_is))
 
 
+@type_and_len_check
 def isub_bytes(stream: str) -> str:
     """Inverse sub byte the stream
 
@@ -189,6 +208,7 @@ def _shift_rows(input_stream: BitMat) -> BitMat:
     return _input_stream
 
 
+@type_and_len_check
 def shift_row(stream: str) -> str:
     """ShiftRow the stream
 
@@ -224,11 +244,12 @@ def _mix_columns(input_stream: BitMat) -> BitMat:
     return _r
 
 
+@type_and_len_check
 def mix_columns(stream: str) -> str:
     """MixColumn the stream
 
     Arguments:
-        stream: b1b2b3...b4
+        stream: b1b2b3...b15
 
     Return:
         apply a matrix multiplication and return the stream
