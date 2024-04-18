@@ -93,6 +93,7 @@ def type_and_len_check(func):
             if not len(arg) == 128:
                 raise TypeError(f'{name!r} should 128 bits')
 
+        return func(*args)
     return wrapper
 
 
@@ -128,9 +129,9 @@ def _sub_byte(byte: int) -> int:
     number = GF128(byte)
     rev = GF128(number) ** -1 if byte != 0 else 0
     mat = GF128([[char] for char in reversed(f'{bin(rev)[2:]:0>8}')])
-    result = (sb_mat @ mat) + b
+    _result = (sb_mat @ mat) + b
     num = ''
-    for bit in reversed(result):
+    for bit in reversed(_result):
         num += str(bit[0])
     return int(num, 2)
 
@@ -138,9 +139,9 @@ def _sub_byte(byte: int) -> int:
 def _isub_byte(byte: int) -> int:
     number = GF128(byte)
     mat = GF128([[char] for char in reversed(f'{bin(number)[2:]:0>8}')])
-    result = (isb_mat @ mat) + ib
+    _result = (isb_mat @ mat) + ib
     num = ''
-    for bit in reversed(result):
+    for bit in reversed(_result):
         num += str(bit[0])
     rev = int(num, 2)
     res = GF128(rev) ** -1 if byte != 0 else 0
@@ -259,4 +260,7 @@ def mix_columns(stream: str) -> str:
     return _matrix_to_stream(_mix_columns(_is))
 
 
-print(GF128(0x01) * GF128(0x02))
+############ ARK: Add Round Key ############  # noqa: E266
+@type_and_len_check
+def add_round_key(stream: str, key: str) -> str:
+    return f'{bin(int(key, 2) ^ int(stream, 2))[2:]:0>128}'
