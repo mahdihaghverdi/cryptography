@@ -4,96 +4,12 @@
 - MC: Mix Columns
 - ARK: Add Round Key
 """
-from functools import wraps
-from inspect import getfullargspec
-from itertools import islice
-from typing import TypeAlias
 
 import galois
 
-BitMat: TypeAlias = list[list[int]]
+from AES.utils import BitMat, result, type_and_len_check, stream_to_matrix, matrix_to_stream
 
 GF128 = galois.GF(2, 8, irreducible_poly='x^8 + x^4 + x^3 + x + 1')
-
-result = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0]
-]
-
-
-def batched(iterable, n):
-    # batched('ABCDEFG', 3) -> ABC DEF G
-    it = iter(iterable)
-    while batch := tuple(islice(it, n)):
-        yield batch
-
-
-def _stream_to_matrix(stream: str) -> BitMat:
-    """Make the stream a matrix converted as an integers
-
-    Arguments:
-        stream: b0b1b2...b15
-
-    Return:
-        [[b0, b4, b8, b12],
-         [b1, b5, b9, b13],
-         [b2, b6, b10, b14],
-         [b3, b7, b11, b15]]
-    """
-    ranges = []
-    s = 0
-    for i in range(0, 128 // 8):
-        e = s + 8
-        ranges.append((s, e))
-        s = e
-
-    mat = [[], [], [], []]
-    for r in batched(ranges, 4):
-        for idx, ra in enumerate(r):
-            s, e = ra
-            _stream = int(stream[s:e], 2)
-            mat[idx].append(_stream)
-    return mat
-
-
-def _matrix_to_stream(matrix: BitMat) -> str:
-    """Make the matrix a stream
-
-    Arguments:
-        matrix: [[b0, b4, b8, b12],
-                 [b1, b5, b9, b13],
-                 [b2, b6, b10, b14],
-                 [b3, b7, b11, b15]]
-
-    Return:
-        'b0b1b2b3...b15'
-    """
-    stream = ''
-    for col in range(4):
-        _stream = ''
-        for row in matrix:
-            _stream += f'{bin(row[col])[2:]:0>8}'
-        stream += _stream
-    return stream
-
-
-def type_and_len_check(func):
-    @wraps(func)
-    def wrapper(*args):
-        argnames = getfullargspec(func).args
-        for arg, name in zip(args, argnames):
-            if not isinstance(arg, str):
-                raise TypeError(f'{name!r} should be `str`')
-
-        for arg, name in zip(args, argnames):
-            if not len(arg) == 128:
-                raise ValueError(f'{name!r} should 128 bits')
-
-        return func(*args)
-    return wrapper
-
 
 ############ SB: Sub Bytes ############  # noqa: E266
 sb_mat = GF128(
@@ -175,8 +91,8 @@ def sub_bytes(stream: str) -> str:
 
     Return: s1s2s3...s15
     """
-    _is = _stream_to_matrix(stream)
-    return _matrix_to_stream(_sub_bytes(_is))
+    _is = stream_to_matrix(stream)
+    return matrix_to_stream(_sub_bytes(_is))
 
 
 @type_and_len_check
@@ -188,8 +104,8 @@ def isub_bytes(stream: str) -> str:
 
     Return: b1b2b3...b15
     """
-    _is = _stream_to_matrix(stream)
-    return _matrix_to_stream(_isub_bytes(_is))
+    _is = stream_to_matrix(stream)
+    return matrix_to_stream(_isub_bytes(_is))
 
 
 ############ SR: Shift Rows ############  # noqa: E266
@@ -221,8 +137,8 @@ def shift_row(stream: str) -> str:
              [b10, b14, b2, b6],
              [b15, b3, b7, b11]]
     """
-    strm = _stream_to_matrix(stream)
-    return _matrix_to_stream(_shift_rows(strm))
+    strm = stream_to_matrix(stream)
+    return matrix_to_stream(_shift_rows(strm))
 
 
 ############ MC: Mix Columns ############  # noqa: E266
@@ -254,8 +170,8 @@ def mix_columns(stream: str) -> str:
         apply a matrix multiplication and return the stream
         c1c2c3...c15
     """
-    _is = _stream_to_matrix(stream)
-    return _matrix_to_stream(_mix_columns(_is))
+    _is = stream_to_matrix(stream)
+    return matrix_to_stream(_mix_columns(_is))
 
 
 ############ ARK: Add Round Key ############  # noqa: E266

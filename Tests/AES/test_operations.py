@@ -4,8 +4,8 @@ import sys
 import pytest
 
 sys.path.append(str(pathlib.Path(__file__).parent.parent.parent))
-from AES.operations import (
-    _stream_to_matrix, _matrix_to_stream, sub_bytes,
+from AES import (
+    stream_to_matrix, matrix_to_stream, sub_bytes,
     isub_bytes, shift_row, mix_columns, add_round_key, type_and_len_check,
 )
 
@@ -32,11 +32,11 @@ mat = [
 
 
 def test_stream_to_matrix():
-    assert _stream_to_matrix(strm) == mat
+    assert stream_to_matrix(strm) == mat
 
 
 def test_matrix_to_stream():
-    assert strm == _matrix_to_stream(mat)
+    assert strm == matrix_to_stream(mat)
 
 
 numbers = [
@@ -55,11 +55,11 @@ answers = [
 
 
 def test_sub_bytes():
-    assert sub_bytes(_matrix_to_stream(numbers)) == _matrix_to_stream(answers)
+    assert sub_bytes(matrix_to_stream(numbers)) == matrix_to_stream(answers)
 
 
 def test_isub_bytes():
-    assert isub_bytes(_matrix_to_stream(answers)) == _matrix_to_stream(numbers)
+    assert isub_bytes(matrix_to_stream(answers)) == matrix_to_stream(numbers)
 
 
 shifted = [
@@ -71,7 +71,7 @@ shifted = [
 
 
 def test_shift_rows():
-    assert shift_row(_matrix_to_stream(mat)) == _matrix_to_stream(shifted)
+    assert shift_row(matrix_to_stream(mat)) == matrix_to_stream(shifted)
 
 
 to_mix = [[1] + [0] * 3, [0] * 4, [0] * 4, [0] * 4]
@@ -79,7 +79,7 @@ got_from_mix = [[2, 3, 1, 1], [0] * 4, [0] * 4, [0] * 4]
 
 
 def test_mix_columns():
-    assert mix_columns(_matrix_to_stream(to_mix)) == _matrix_to_stream(got_from_mix)
+    assert mix_columns(matrix_to_stream(to_mix)) == matrix_to_stream(got_from_mix)
 
 
 def test_add_round_key():
