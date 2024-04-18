@@ -175,3 +175,35 @@ def isub_bytes(stream: str) -> str:
     """
     _is = _stream_to_matrix(stream)
     return _matrix_to_stream(_isub_bytes(_is))
+
+
+############ SR: Shift Rows ############  # noqa: E266
+def _rotate_left(row: list, rotate: int):
+    for _ in range(rotate):
+        got = row.pop(0)
+        row.append(got)
+
+
+def _shift_rows(input_stream: BitMat) -> BitMat:
+    _input_stream = input_stream.copy()
+    for idx, row in enumerate(_input_stream):
+        _rotate_left(row, idx)
+
+    return _input_stream
+
+
+def shift_row(stream: str) -> str:
+    """ShiftRow the stream
+
+    Arguments:
+        stream: b1b2b3...b15
+
+    Returns:
+        stream of:
+            [[b0, b4, b8, b12],
+             [b5, b9, b13, b1],
+             [b10, b14, b2, b6],
+             [b15, b3, b7, b11]]
+    """
+    strm = _stream_to_matrix(stream)
+    return _matrix_to_stream(_shift_rows(strm))

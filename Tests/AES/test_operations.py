@@ -1,4 +1,4 @@
-from AES.operations import _stream_to_matrix, _matrix_to_stream, sub_bytes, isub_bytes
+from AES.operations import _stream_to_matrix, _matrix_to_stream, sub_bytes, isub_bytes, shift_row
 
 strm = ''
 for num in range(16):
@@ -41,3 +41,15 @@ def test_sub_bytes():
 
 def test_isub_bytes():
     assert isub_bytes(_matrix_to_stream(answers)) == _matrix_to_stream(numbers)
+
+
+shifted = [
+    [0, 4, 8, 12],
+    [5, 9, 13, 1],
+    [10, 14, 2, 6],
+    [15, 3, 7, 11],
+]
+
+
+def test_shift_rows():
+    assert shift_row(_matrix_to_stream(mat)) == _matrix_to_stream(shifted)
