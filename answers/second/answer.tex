@@ -219,6 +219,23 @@ R_1 = \overline{L_0} \oplus B
 \begin{equation}
 E_k(P) = C \iff E_{\overline{k}}(\overline{P}) = \overline{C}
 \end{equation}
+
+اگر تحت حمله‌ی 
+\lr{chosen-plaintext attack}
+به 
+\lr{DES}
+باشیم، با توجه به ویژگی مکمل بودن آن، ما می‌توانیم وقتی 
+$E_k(P) = C$
+را از 
+\lr{DES}
+عبور دادیم و 
+\lr{C}
+را گرفتیم، بار دوم \textbf{بدون محاسبه‌ی مجدد}
+$E_{\overline{k}}(\overline{P}) = \overline{C}$
+را داشته باشیم. پس پیچیدگی شکستن آن نصف شده و به 
+$2^{55}$
+می‌رسد.
+
 \end{enumerate}
 
 \section{}
