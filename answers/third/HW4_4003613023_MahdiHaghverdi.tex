@@ -1,0 +1,73 @@
+\documentclass{article}
+% URLs and hyperlinks ---------------------------------------
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+\usepackage{xurl}
+%----------------------------------------------------
+
+\usepackage{xepersian}
+\settextfont{Yas}
+
+\title{تکلیف چهارم}
+\author{مهدی حق‌وردی}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{دیفی-هلمن سه نفره}
+\begin{latin}
+One possible protocol could be the following:
+
+\begin{enumerate}
+\item 
+A, B, C each generate their private keys $x_A$, $x_B$, $x_C$
+
+\item 
+A, B, C each calculate $y_A = g^{x_A}$, $y_B = g^{x_B}$, $y_C = g^{x_C}$
+
+\item 
+A sends $y_A$ to B, B sends $y_B$ to C, C sends $y_C$ to A.
+
+\item 
+A calculates $z_{CA} = y^{x_A}_{C}$, B calculates $z_{AB} = y^{x_B}_{A}$, C calculates $z_{BC} = y^{x_C}_{B}$.
+
+\item 
+A sends $z_{CA}$ to B, B sends $z_{AB}$ to C, C sends $z_{BC}$ to A.
+
+\item 
+A calculates $k_{BCA} = z^{x_A}_{BC}$, 
+B calculates $k_{CAB} = z^{x_B}_{CA}$,
+C calculates $k_{ABC} = z^{x_C}_{AB}$.
+\end{enumerate}
+
+The above equality means that the three parties now know a common secret $k_{ABC} = k_{CAB} = k_{BCA}$
+
+\end{latin}
+\section{رمزنگاری بهینه در برقراری یک نشست \lr{(session)}}
+
+\section{معکوس ضربی}
+
+\section{در \lr{RSA}}
+\subsection{پیدا کردن \lr{d}}
+\subsection{پیدا کردن \lr{n}, \lr{d} و \lr{$\Phi(n)$}}
+\subsection{چرا \lr{e} را عدد یک انتخاب نمی‌کنیم؟}
+\subsection{حمله‌ی \lr{chosen-ciphertext} روی \lr{RSA}}
+\subsection{آیا کلید \lr{regenrate} شده امن است؟}
+
+\section{در \lr{Rabin}}
+\subsection{متن ۱۷ را رمز کنید}
+\subsection{با استفاده از \lr{Chinese remainder theorem} چهار متن آشکار احتمالی را پیدا کنید}
+
+\section{امنیت امضای دیجیتال \lr{RSA}}
+
+\section{سوء‌استفاده‌ی فرد مهاجم از روی ویژگی همریختی \lr{RSA}}
+
+\section{سختی جعل در امضای الجمال}
+
+\end{document}
