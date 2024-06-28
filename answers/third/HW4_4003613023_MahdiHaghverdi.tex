@@ -10,6 +10,7 @@
 \usepackage{xurl}
 %----------------------------------------------------
 
+\usepackage{amsmath}
 \usepackage{xepersian}
 \settextfont{Yas}
 
@@ -52,18 +53,110 @@ The above equality means that the three parties now know a common secret $k_{ABC
 \section{رمزنگاری بهینه در برقراری یک نشست \lr{(session)}}
 
 \section{معکوس ضربی}
+\begin{latin}
+Find $19^{-1}  \mod 999$ using EEA.
 
+\begin{itemize}
+\item $999 \overset{999}{\equiv} 0 \times 19$
+\item $19 \overset{999}{\equiv} 1 \times 19$
+\item $11 = 999 - (52 \times 19) \overset{999}{\equiv} -52 \times 19$
+\item $8 = 19 - (1 \times 11) \overset{999}{\equiv} (1\times19) - (-52\times19) = 53\times19$
+
+\item $3 = 11 - (1\times8) \overset{999}{\equiv}
+(-52\times19)-(53\times19) = -105\times19$
+
+\item $2 = 8 - (2\times3) \overset{999}{\equiv}
+(53\times19) - (2\times(-105\times19)) = 263\times19$
+
+\item $1 = 3 - (1\times2) \overset{999}{\equiv}
+(-105\times19)-(263\times19) = -368\times19$
+
+\item $\Rightarrow -368 \mod 999 = 631$ \texttt{<-- answer}
+
+\item checking the answer
+
+$19 \times 631 = 11989 \mod 999 = 1$
+
+\end{itemize}
+\end{latin}
+
+\newpage
 \section{در \lr{RSA}}
 \subsection{پیدا کردن \lr{d}}
+\begin{latin}
+\begin{itemize}
+\item[] $d = 17^{-1} \mod \Phi(3937)$
+\item[] $\Phi(3937) = \Phi(31\times127) = 30\times126 = 3780$
+\item[] $3780 \overset{3780}{\equiv} 0 \times 17$
+\item[] $17 \overset{3780}{\equiv} 1 \times 17$
+\item[] $6  = 3780 - (222\times17) \overset{3780}{\equiv} -222 \times 17$
+\item[] $5  = 17 - (2\times6) \overset{3780}{\equiv}
+(1\times17) - (2\times(-222\times17)) = 445\times17$
+\item[] $1  = 6 - (1\times5) \overset{3780}{\equiv}
+(-222\times17) - (445\times17)  = -667 \times 17$
+\item[] $-667 \mod 3780 = 3113$  \texttt{<-- d}
+\item[] check the answer
+
+$17 \times 3113 = 52921 \mod 3780 = 1$
+\end{itemize}
+\end{latin}
+
 \subsection{پیدا کردن \lr{n}, \lr{d} و \lr{$\Phi(n)$}}
+\begin{latin}
+\begin{itemize}
+\item[] $n = pq = 17\times23 = 391$ \texttt{<-- n}
+\item[] $\Phi(n) = (p-1)(q-1) = 352$ \texttt{<-- $\Phi(n)$}
+\item[] $d = 3^{-1} \mod \Phi(n)$
+\item[] $352 \overset{352}{\equiv} = 0\times3$
+\item[] $3 \overset{352}{\equiv} = 1\times3$
+\item[] $1 = 352 - (117*3) \overset{352}{\equiv} =
+-117 \times 3$
+\item[] $-117 \mod 352 = 235$ \texttt{<-- d}
+
+\item[] check the answer
+
+$235\times3 = 705 \mod 352 = 1$
+\end{itemize}
+\end{latin}
+
+
 \subsection{چرا \lr{e} را عدد یک انتخاب نمی‌کنیم؟}
+برای اینکه در هر مجموعه‌ی 
+$Z^*_n$
+عی، معکوس ۱ می‌شود ۱.
+
 \subsection{حمله‌ی \lr{chosen-ciphertext} روی \lr{RSA}}
+چون این فرد متن رمزشده (\lr{c = 57}) و اطلاعات کلید عمومی (\lr{e} و \lr{n}) را دارد و در این مثال \textbf{مقدار \lr{n} کوچک است} میتواند آن را تجزیه کند و سپس \lr{$\Phi$} را محاسبه کند و با مقادیر مختلف کلیدی که برای \lr{decryption} انتخاب و آزمون و خطا می‌کند به \lr{p} برسد.\LTRfootnote{\url{https://www.geeksforgeeks.org/chosen-ciphertext-attacks-on-rsa/}}
 \subsection{آیا کلید \lr{regenrate} شده امن است؟}
+از نظر من جفت کلید جدید امن نیستند. به این دلیل که مهاجم اکنون از معادله‌ی 
+\lr{$d = e^{-1} \mod \Phi(n)$}
+تنها یک مجهول دارد که (چون مطمئن نیستم روش ریاضی دارد یا خیر) می‌تواند با آزمون و خطا هم به فی دست پیدا کرده و از روی کلید عمومی جدید براحتی کلید خصوصی جدید را محاسبه کند.
 
 \section{در \lr{Rabin}}
 \subsection{متن ۱۷ را رمز کنید}
+\begin{latin}
+\begin{itemize}
+\item[] $m^2 \mod \Phi(n)$
+\item[] $n = 47\times11 = 517$
+\item[] $\Phi(n) = 46\times10 = 460$
+\item[] $c = 17^2 \mod 460 = 289$  \texttt{<-- ciphertext}
+\end{itemize}
+\end{latin}
+
 \subsection{با استفاده از \lr{Chinese remainder theorem} چهار متن آشکار احتمالی را پیدا کنید}
 
+\begin{latin}
+\begin{equation*}
+\sqrt{c} \mod n = \left[q\times(\pm c^{\frac{p+1}{4}})\underbrace{(q^{-1} \mod p)}_{5}\right] + \left[p\times(\pm c^{\frac{q+1}{4}})\underbrace{(p^{-1} \mod q)}_{4}\right]
+\end{equation*}
+
+\begin{enumerate}
+\item $(11\times289^{12}\times5) + (47\times289^{3}\times4)$
+\item $(11\times289^{12}\times5) + (47\times-289^{3}\times4)$
+\item $(11\times-289^{12}\times5) + (47\times289^{3}\times4)$
+\item $(11\times-289^{12}\times5) + (47\times-289^{3}\times4)$
+\end{enumerate}
+\end{latin}
 \section{امنیت امضای دیجیتال \lr{RSA}}
 
 \section{سوء‌استفاده‌ی فرد مهاجم از روی ویژگی همریختی \lr{RSA}}
