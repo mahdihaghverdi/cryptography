@@ -130,7 +130,13 @@ $Z^*_n$
 \subsection{آیا کلید \lr{regenrate} شده امن است؟}
 از نظر من جفت کلید جدید امن نیستند. به این دلیل که مهاجم اکنون از معادله‌ی 
 \lr{$d = e^{-1} \mod \Phi(n)$}
-تنها یک مجهول دارد که (چون مطمئن نیستم روش ریاضی دارد یا خیر) می‌تواند با آزمون و خطا هم به فی دست پیدا کرده و از روی کلید عمومی جدید براحتی کلید خصوصی جدید را محاسبه کند.
+تنها یک مجهول دارد که اگر 
+\lr{e}
+و
+\lr{d}
+را در هم ضرب کند و یکی کم کند به مضربی از 
+\lr{$\Phi(n)$}
+می‌رسد.
 
 \section{در \lr{Rabin}}
 \subsection{متن ۱۷ را رمز کنید}
@@ -147,14 +153,14 @@ $Z^*_n$
 
 \begin{latin}
 \begin{equation*}
-\sqrt{c} \mod n = \left[q\times(\pm c^{\frac{p+1}{4}})\underbrace{(q^{-1} \mod p)}_{5}\right] + \left[p\times(\pm c^{\frac{q+1}{4}})\underbrace{(p^{-1} \mod q)}_{4}\right]
+\sqrt{c} \mod n = \left[q\times(\pm c^{\frac{p+1}{4}})\underbrace{(q^{-1} \mod p)}_{30}\right] + \left[p\times(\pm c^{\frac{q+1}{4}})\underbrace{(p^{-1} \mod q)}_{4}\right]
 \end{equation*}
 
 \begin{enumerate}
-\item $(11\times289^{12}\times5) + (47\times289^{3}\times4)$
-\item $(11\times289^{12}\times5) + (47\times-289^{3}\times4)$
-\item $(11\times-289^{12}\times5) + (47\times289^{3}\times4)$
-\item $(11\times-289^{12}\times5) + (47\times-289^{3}\times4)$
+\item $(11\times289^{12}\times30) + (47\times289^{3}\times4)$
+\item $(11\times289^{12}\times30) + (47\times-289^{3}\times4)$
+\item $(11\times-289^{12}\times30) + (47\times289^{3}\times4)$
+\item $(11\times-289^{12}\times30) + (47\times-289^{3}\times4)$
 \end{enumerate}
 \end{latin}
 
@@ -171,5 +177,5 @@ d = \log^{S_i}_{m_i} \mod n
 مهاجم می‌تواند امضاها را در هم ضرب کند و امضای ضرب دو پیام را بدون داشتن کلید خصوصی بدست بیاورد.
 
 \section{سختی جعل در امضای الجمال}
-
+با مسئله‌ی لگاریتم گسسته مواجه می‌شود.
 \end{document}
