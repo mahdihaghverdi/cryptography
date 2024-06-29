@@ -53,7 +53,14 @@ def deal(s: int, n: int, t: int, p: int) -> dict[int: int]:
     return {i: f.calculate(i) % p for i in range(1, n + 1)}
 
 
-def secret(t, p, y):
+def secret(t: int, p: int, y: dict[int, int]) -> int:
+    """
+
+    :param t: Number of parties to share their value
+    :param p: The modulos
+    :param y: A dictionary of ``{x: f(x) % p}``
+    :return: The secret
+    """
     if len(y) < t:
         raise ValueError("Number of shares should be greater than or equal to t")
 
