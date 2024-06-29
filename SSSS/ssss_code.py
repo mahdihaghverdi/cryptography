@@ -1,5 +1,11 @@
 # Shamir Secret Sharing Schema
+import math
 import random
+
+
+def calculate_reverse(n, p):
+    phi = sum(1 for num in range(1, p) if math.gcd(num, p) == 1)
+    return (n ** (phi - 1)) % p
 
 
 class F:
@@ -45,3 +51,18 @@ def deal(s: int, n: int, t: int, p: int) -> dict[int: int]:
     print(f'f(x) = {" + ".join(coefficients)}')
 
     return {i: f.calculate(i) % p for i in range(1, n + 1)}
+
+
+def secret(t, p, y):
+    if len(y) < t:
+        raise ValueError("Number of shares should be greater than or equal to t")
+
+    sec = 0
+    for i in y:
+        yi = y[i]
+        prod = 1
+        for j in y:
+            if j != i:
+                prod *= (j * calculate_reverse(j - i, p))
+        sec += yi * prod
+    return sec % p
