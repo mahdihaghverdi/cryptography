@@ -1,4 +1,5 @@
 # Shamir Secret Sharing Schema
+import random
 
 
 class F:
@@ -17,3 +18,22 @@ class F:
             co * (n ** power)
             for power, co in enumerate(reversed(self.coefficients))
         )
+
+
+def deal(s, n, t, p):
+    if t > n:
+        raise ValueError(f"t must be lesser than or equal to n")
+
+    f = F()
+    for _ in range(t - 1):
+        f.add_co(random.randint(1, p - 1))
+    f.add_co(s % p)
+
+    template = '{co}x^{po}'
+    coefficients = [
+        template.format(co=f[c], po=p)
+        for c, p in zip(range(t), reversed(range(t)))
+    ]
+    print(f'f(x) = {" + ".join(coefficients)}')
+
+    return {i: f.calculate(i) % p for i in range(1, n + 1)}
