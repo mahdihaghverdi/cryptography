@@ -20,7 +20,15 @@ class F:
         )
 
 
-def deal(s, n, t, p):
+def deal(s: int, n: int, t: int, p: int) -> dict[int: int]:
+    """Calculate the shares
+
+    :param s: The secret (``s %= p``)
+    :param n: Number of shares
+    :param t: Number of required parties to share their value
+    :param p: The modulos (must be prime)
+    :return: A dictionary of ``{x: f(x)%p}``
+    """
     if t > n:
         raise ValueError(f"t must be lesser than or equal to n")
 
