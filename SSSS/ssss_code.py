@@ -75,3 +75,8 @@ def secret(t: int, p: int, y: dict[int, int]) -> int:
                 prod *= (j * calculate_reverse(j - i, p))
         sec += yi * prod
     return sec % p
+
+
+deals = deal(4, 10, 3, 13)
+print(deals)
+print(secret(3, 13, {3: deals[3], 5: deals[5], 7: deals[7], 8: deals[8]}))
